@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Praticar — Modo Leitura Fácil</title>
+<style>
+  :root{
+    --tinta:#22314f; --creme:#fdf6ea; --cartao:#ffffff; --roxo:#6c4bd1;
+    --verde:#1f9d63; --verdesuave:#e4f6ec; --amarelo:#f2b23a; --azul:#2f77c9;
+    --rosa:#e2495d; --rosasuave:#fbe7ea;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:Verdana, 'Segoe UI', Tahoma, sans-serif;
+    background:var(--creme); color:var(--tinta);
+    line-height:1.9; letter-spacing:.4px; word-spacing:1px;
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  header{background:var(--verde); color:#fff; padding:20px; text-align:center;}
+  header h1{font-size:1.4em;}
+  .info{max-width:620px; margin:20px auto 0; padding:0 18px; font-size:1.15em;}
+  .info .estrelas{font-size:1.3em; letter-spacing:2px;}
+  main{flex:1; display:flex; align-items:flex-start; justify-content:center; padding:10px 18px;}
+  .card{
+    background:var(--cartao); border-radius:24px; padding:28px 24px; max-width:620px; width:100%;
+    box-shadow:0 6px 20px #00000018; border-top:12px solid var(--verde);
+  }
+  .emojigrande{font-size:2.8em; text-align:center; display:block; margin-bottom:10px;}
+  .pergunta{font-size:1.45em; line-height:1.5; margin-bottom:6px;}
+  .btnOuvir{
+    display:inline-flex; align-items:center; gap:8px; margin:8px 0 18px;
+    background:var(--amarelo); color:#4a3610; border:none; border-radius:40px;
+    padding:12px 22px; font-size:1.1em; font-weight:bold; cursor:pointer; font-family:inherit;
+  }
+  .btnOuvir:hover{background:#e39f24;}
+  .opcao{
+    display:block; width:100%; text-align:left; font-family:inherit;
+    border:3px solid #dfe6f0; background:#fff; border-radius:18px;
+    padding:20px 22px; margin:12px 0; font-size:1.4em; font-weight:bold; cursor:pointer;
+  }
+  .opcao:hover{border-color:var(--verde); background:#f4fbf6;}
+  .opcao.certa{background:var(--verdesuave); border-color:var(--verde);}
+  .opcao.errada{background:var(--rosasuave); border-color:var(--rosa);}
+  .opcao:disabled{cursor:default;}
+  .feedback{font-size:1.3em; margin-top:14px; padding:16px 18px; border-radius:16px; display:none; line-height:1.6;}
+  .feedback.ok{display:block; background:var(--verdesuave); color:#136c43;}
+  .feedback.quase{display:block; background:#fff5e0; color:#8a5a12;}
+  .btnProx{
+    border:none; border-radius:40px; padding:18px 30px; font-size:1.25em; font-weight:bold;
+    cursor:pointer; font-family:inherit; background:var(--verde); color:#fff; margin-top:18px; width:100%;
+    display:none;
+  }
+  .final{text-align:center;}
+  .final .grande{font-size:3em; margin:6px 0;}
+  .final h2{font-size:1.6em; line-height:1.5; margin:10px 0;}
+  .final p{font-size:1.3em;}
+  .final .estrelasFim{font-size:2em; letter-spacing:4px; margin:14px 0;}
+  .btnRefazer{
+    border:none; border-radius:40px; padding:16px 26px; font-size:1.15em; font-weight:bold;
+    cursor:pointer; font-family:inherit; background:var(--roxo); color:#fff; margin-top:16px;
+  }
+  .home{display:block; text-align:center; max-width:620px; margin:22px auto 40px; padding:0 18px;}
+  .home a{color:var(--roxo); font-size:1.15em; font-weight:bold; text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header><h1>🎯 Praticar — uma de cada vez</h1></header>
+
+<div class="info">
+  <span id="progresso">Pergunta 1 de 8</span>
+  <div class="estrelas" id="estrelas">⭐ 0</div>
+</div>
+
+<main>
+  <div class="card" id="card">
+    <span class="emojigrande" id="emoji">🎪</span>
+    <div class="pergunta" id="pergunta"></div>
+    <button class="btnOuvir" id="btnOuvir">🔊 Ouvir a pergunta</button>
+    <div id="opcoes"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="btnProx" id="btnProx" onclick="proxima()">Próxima ➜</button>
+  </div>
+</main>
+
+<div class="home"><a href="index.html">🏠 Voltar ao início</a></div>
+
+<script>
+var QS = [
+ { emoji:'🍦', p:'Uma sorveteria tem 2 sabores e 3 tamanhos. Quantas combinações de 1 sabor e 1 tamanho dá para fazer?',
+   ops:['5','6','8'], c:1, audio:'Uma sorveteria tem 2 sabores e 3 tamanhos. Quantas combinações dá para fazer? Dica: multiplique.',
+   ok:'É só multiplicar: 2 × 3 = 6. Muito bem! 🌟' },
+
+ { emoji:'👕', p:'Com 2 blusas e 4 calças, quantos looks diferentes dá para montar?',
+   ops:['6','8','24'], c:1, audio:'Com 2 blusas e 4 calças, quantos looks diferentes dá para montar? Dica: multiplique.',
+   ok:'2 × 4 = 8 looks. Você acertou! 👏' },
+
+ { emoji:'🎲', p:'Num dado comum (de 1 a 6), qual é a chance de sair o número 5?',
+   ops:['1 de 6','5 de 6','1 de 5'], c:0, audio:'Num dado comum, de 1 a 6, qual é a chance de sair o número 5?',
+   ok:'Só uma face tem o 5, entre 6. A chance é 1 de 6. Boa! 🎉' },
+
+ { emoji:'🔵', p:'Num saco há 2 bolinhas vermelhas e 3 azuis. Qual a chance de tirar uma AZUL?',
+   ops:['2 de 5','3 de 5','3 de 2'], c:1, audio:'Num saco há 2 bolinhas vermelhas e 3 azuis. São 5 no total. Qual a chance de tirar uma azul?',
+   ok:'São 3 azuis num total de 5. A chance é 3 de 5. Isso mesmo! ⭐' },
+
+ { emoji:'❌', p:'Num dado de 1 a 6, sair o número 8 é um evento...',
+   ops:['certo','impossível','fácil'], c:1, audio:'Num dado de 1 a 6, sair o número 8 é um evento certo ou impossível?',
+   ok:'O dado só vai até 6. Então sair 8 é impossível. Perfeito! 💪' },
+
+ { emoji:'💯', p:'A metade é o mesmo que quantos por cento?',
+   ops:['25%','50%','10%'], c:1, audio:'A metade é o mesmo que quantos por cento?',
+   ok:'A metade é 50%. Você lembrou! 🌟' },
+
+ { emoji:'📦', p:'Tenho 3 caixas com 5 lápis em cada. Quantos lápis ao todo?',
+   ops:['8','15','35'], c:1, audio:'Tenho 3 caixas com 5 lápis em cada uma. Quantos lápis ao todo? Dica: multiplique.',
+   ok:'3 × 5 = 15 lápis. Muito bem! 🎉' },
+
+ { emoji:'🍬', p:'Tenho 10 balas para repartir igualmente entre 2 amigos. Quantas para cada um?',
+   ops:['5','8','12'], c:0, audio:'Tenho 10 balas para repartir igualmente entre 2 amigos. Quantas balas para cada um? Dica: divida.',
+   ok:'10 ÷ 2 = 5 balas para cada. Você conseguiu! 👏' }
+];
+
+var i=0, estrelas=0, respondida=false;
+function mostrar(){
+  respondida=false;
+  var q=QS[i];
+  document.getElementById('emoji').textContent=q.emoji;
+  document.getElementById('pergunta').textContent=q.p;
+  document.getElementById('progresso').textContent='Pergunta '+(i+1)+' de '+QS.length;
+  document.getElementById('btnOuvir').onclick=function(){ falar(q.audio); };
+  var box=document.getElementById('opcoes'); box.innerHTML='';
+  q.ops.forEach(function(t,k){
+    var b=document.createElement('button');
+    b.className='opcao'; b.textContent=t;
+    b.onclick=function(){ responder(k,b); };
+    box.appendChild(b);
+  });
+  var fb=document.getElementById('feedback'); fb.className='feedback'; fb.innerHTML='';
+  document.getElementById('btnProx').style.display='none';
+  document.getElementById('btnProx').textContent = (i===QS.length-1)?'Ver o final 🏁':'Próxima ➜';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function responder(k,btn){
+  if(respondida){return;} respondida=true;
+  var q=QS[i];
+  var botoes=document.querySelectorAll('.opcao');
+  botoes.forEach(function(b){ b.disabled=true; });
+  var fb=document.getElementById('feedback');
+  if(k===q.c){
+    estrelas++;
+    btn.classList.add('certa');
+    fb.className='feedback ok'; fb.innerHTML='🎉 <b>Acertou!</b> '+q.ok;
+    falar('Acertou! '+q.ok);
+  } else {
+    btn.classList.add('errada');
+    botoes[q.c].classList.add('certa');
+    fb.className='feedback quase'; fb.innerHTML='🙂 <b>Quase!</b> A resposta certa está em verde. '+q.ok+' Vamos para a próxima!';
+    falar('Quase! Sem problema. A resposta certa é '+q.ops[q.c]+'. '+q.ok);
+  }
+  document.getElementById('estrelas').textContent='⭐ '+estrelas;
+  document.getElementById('btnProx').style.display='block';
+}
+function proxima(){
+  if(i<QS.length-1){ i++; mostrar(); } else { finalizar(); }
+}
+function finalizar(){
+  var c=document.getElementById('card');
+  c.style.borderTopColor='#f2b23a';
+  var cheias=Math.max(1,Math.round(estrelas/QS.length*5));
+  c.innerHTML='<div class="final">'+
+    '<div class="grande">🏆🎉</div>'+
+    '<h2>Você terminou! Muito bem!</h2>'+
+    '<p>Você ganhou '+estrelas+' de '+QS.length+' estrelas.</p>'+
+    '<div class="estrelasFim">'+'⭐'.repeat(cheias)+'☆'.repeat(5-cheias)+'</div>'+
+    '<p>Cada acerto é uma vitória. E o que você errou, agora já sabe! 💛</p>'+
+    '<button class="btnRefazer" onclick="reiniciar()">🔄 Praticar de novo</button>'+
+    '</div>';
+  falar('Você terminou! Muito bem! Você ganhou '+estrelas+' estrelas. Cada acerto é uma vitória.');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function reiniciar(){ i=0; estrelas=0; document.getElementById('estrelas').textContent='⭐ 0';
+  document.getElementById('card').style.borderTopColor='#1f9d63';
+  document.getElementById('card').innerHTML=
+    '<span class="emojigrande" id="emoji"></span>'+
+    '<div class="pergunta" id="pergunta"></div>'+
+    '<button class="btnOuvir" id="btnOuvir">🔊 Ouvir a pergunta</button>'+
+    '<div id="opcoes"></div>'+
+    '<div class="feedback" id="feedback"></div>'+
+    '<button class="btnProx" id="btnProx" onclick="proxima()">Próxima ➜</button>';
+  mostrar();
+}
+function falar(t){
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(t);
+    u.lang='pt-BR'; u.rate=0.9;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+mostrar();
+</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprender — Modo Leitura Fácil</title>
+<style>
+  :root{
+    --tinta:#22314f; --creme:#fdf6ea; --cartao:#ffffff; --roxo:#6c4bd1;
+    --verde:#1f9d63; --amarelo:#f2b23a; --azul:#2f77c9;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:Verdana, 'Segoe UI', Tahoma, sans-serif;
+    background:var(--creme); color:var(--tinta);
+    line-height:2; letter-spacing:.4px; word-spacing:1px;
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  header{background:var(--roxo); color:#fff; padding:20px; text-align:center;}
+  header h1{font-size:1.4em;}
+  .passoinfo{max-width:620px; margin:20px auto 0; padding:0 18px; font-size:1.1em;}
+  .pontos{margin-top:8px; font-size:1.2em; letter-spacing:3px;}
+  main{flex:1; display:flex; align-items:flex-start; justify-content:center; padding:10px 18px;}
+  .card{
+    background:var(--cartao); border-radius:24px; padding:30px 26px; max-width:620px; width:100%;
+    box-shadow:0 6px 20px #00000018; border-top:12px solid var(--azul); text-align:left;
+  }
+  .emojigrande{font-size:3.4em; text-align:center; display:block; margin-bottom:14px; line-height:1.2;}
+  .card h2{font-size:1.6em; line-height:1.4; margin-bottom:14px;}
+  .linha{font-size:1.35em; margin:10px 0;}
+  .conta{
+    font-family:'Courier New',monospace; font-size:1.5em; font-weight:bold;
+    background:#f2eefb; border-radius:14px; padding:14px 18px; margin:16px 0; text-align:center; color:#3a2a72;
+  }
+  .btnOuvir{
+    display:inline-flex; align-items:center; gap:10px; margin-top:12px;
+    background:var(--amarelo); color:#4a3610; border:none; border-radius:40px;
+    padding:16px 28px; font-size:1.2em; font-weight:bold; cursor:pointer; font-family:inherit;
+  }
+  .btnOuvir:hover{background:#e39f24;}
+  .navbtns{max-width:620px; margin:22px auto 40px; padding:0 18px; display:flex; gap:12px; justify-content:space-between;}
+  .btn{
+    border:none; border-radius:40px; padding:18px 24px; font-size:1.2em; font-weight:bold;
+    cursor:pointer; font-family:inherit; flex:1;
+  }
+  .btnVoltar{background:#e7e2f2; color:#4a3f6b;}
+  .btnVoltar:disabled{opacity:.4; cursor:default;}
+  .btnProx{background:var(--verde); color:#fff;}
+  .btnHome{
+    display:block; text-align:center; max-width:620px; margin:0 auto 40px; padding:0 18px;
+  }
+  .btnHome a{color:var(--roxo); font-size:1.15em; font-weight:bold; text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header><h1>📚 Aprender — um passo por vez</h1></header>
+
+<div class="passoinfo">
+  <span id="passoTxt">Passo 1 de 11</span>
+  <div class="pontos" id="pontos"></div>
+</div>
+
+<main>
+  <div class="card" id="card">
+    <span class="emojigrande" id="emoji">🎪</span>
+    <h2 id="titulo"></h2>
+    <div id="corpo"></div>
+    <button class="btnOuvir" id="btnOuvir">🔊 Ouvir</button>
+  </div>
+</main>
+
+<div class="navbtns">
+  <button class="btn btnVoltar" id="btnVoltar" onclick="voltar()">⬅️ Voltar</button>
+  <button class="btn btnProx" id="btnProx" onclick="proximo()">Próximo ➜</button>
+</div>
+
+<div class="btnHome"><a href="index.html">🏠 Voltar ao início</a></div>
+
+<script>
+var CARDS = [
+ { emoji:'🎪', cor:'#6c4bd1', titulo:'Combinar é juntar coisas',
+   corpo:['Vamos aprender a <b>contar</b> de quantos jeitos dá para juntar as coisas.','Isso se chama <b>combinar</b>.'],
+   audio:'Vamos aprender a contar de quantos jeitos dá para juntar as coisas. Isso se chama combinar.' },
+
+ { emoji:'✖️', cor:'#6c4bd1', titulo:'A regra mágica: multiplicar',
+   corpo:['Para saber quantas combinações existem, é só <b>multiplicar</b>.','Veja o exemplo:'],
+   conta:'3 sabores × 2 tamanhos = 6',
+   audio:'Para saber quantas combinações existem, é só multiplicar. Por exemplo: 3 sabores vezes 2 tamanhos dá 6 combinações.' },
+
+ { emoji:'👕', cor:'#6c4bd1', titulo:'Mais um exemplo',
+   corpo:['Com <b>2 blusas</b> e <b>3 calças</b>, quantos looks dá?','É só multiplicar:'],
+   conta:'2 blusas × 3 calças = 6',
+   audio:'Com 2 blusas e 3 calças, quantos looks dá? É só multiplicar: 2 vezes 3 dá 6 looks.' },
+
+ { emoji:'🎲', cor:'#e2495d', titulo:'O que é probabilidade?',
+   corpo:['Probabilidade é a <b>chance</b> de algo acontecer.','Como a chance de ganhar um prêmio na roleta. 🎡'],
+   audio:'Probabilidade é a chance de algo acontecer. Como a chance de ganhar um prêmio na roleta.' },
+
+ { emoji:'🎯', cor:'#e2495d', titulo:'Como achar a chance',
+   corpo:['Conte quantos casos <b>dão certo</b>.','Depois conte o <b>total</b> de casos.','No dado, a chance de sair o número 3 é:'],
+   conta:'1 de 6',
+   audio:'Conte quantos casos dão certo. Depois conte o total de casos. No dado, a chance de sair o número 3 é 1 em 6, porque só uma face tem o 3.' },
+
+ { emoji:'✅', cor:'#e2495d', titulo:'Certo e impossível',
+   corpo:['<b>Certo</b> é o que <b>sempre</b> acontece.','<b>Impossível</b> é o que <b>nunca</b> acontece.','No dado, sair o número 9 é impossível. ❌'],
+   audio:'Certo é o que sempre acontece. Impossível é o que nunca acontece. No dado, sair o número 9 é impossível, porque o dado só vai até 6.' },
+
+ { emoji:'🔴', cor:'#e2495d', titulo:'O saquinho de bolinhas',
+   corpo:['No saco há <b>3 bolinhas vermelhas</b> e <b>2 azuis</b>.','Ao todo são <b>5</b> bolinhas.','A chance de tirar uma vermelha é:'],
+   conta:'3 de 5',
+   audio:'No saco há 3 bolinhas vermelhas e 2 azuis. Ao todo são 5 bolinhas. A chance de tirar uma vermelha é 3 de 5.' },
+
+ { emoji:'💯', cor:'#1f9d63', titulo:'A metade é 50%',
+   corpo:['A chance também pode virar <b>porcentagem</b>.','A <b>metade</b> é o mesmo que <b>50%</b>.'],
+   conta:'metade = 50%',
+   audio:'A chance também pode virar porcentagem. A metade é o mesmo que 50 por cento.' },
+
+ { emoji:'🍀', cor:'#1f9d63', titulo:'Mais porcentagens fáceis',
+   corpo:['<b>Um quarto</b> é <b>25%</b>.','<b>Um décimo</b> é <b>10%</b>.','Vale a pena decorar essas três! 🌟'],
+   conta:'¼ = 25%   •   1/10 = 10%',
+   audio:'Um quarto é 25 por cento. Um décimo é 10 por cento. E a metade é 50 por cento. Vale a pena decorar essas três.' },
+
+ { emoji:'📦', cor:'#2f77c9', titulo:'Juntar grupos iguais = multiplicar',
+   corpo:['Tenho <b>3 caixas</b> com <b>4 bombons</b> em cada uma.','Quantos bombons ao todo?'],
+   conta:'3 × 4 = 12 bombons',
+   audio:'Tenho 3 caixas com 4 bombons em cada uma. Para saber o total, multiplico: 3 vezes 4 dá 12 bombons.' },
+
+ { emoji:'➗', cor:'#2f77c9', titulo:'Repartir igual = dividir',
+   corpo:['Tenho <b>12 balas</b> para <b>3 amigos</b>.','Cada um recebe a mesma quantidade:'],
+   conta:'12 ÷ 3 = 4 para cada',
+   audio:'Tenho 12 balas para repartir igualmente entre 3 amigos. Divido: 12 dividido por 3 dá 4 balas para cada um.' },
+
+ { emoji:'🏆', cor:'#f2b23a', titulo:'Muito bem! Você conseguiu!',
+   corpo:['Você aprendeu combinações, chances e porcentagem. 🌟','Agora vamos <b>praticar</b> juntos, com calma.'],
+   audio:'Muito bem! Você conseguiu! Você aprendeu combinações, chances e porcentagem. Agora vamos praticar juntos, com calma.',
+   fim:true }
+];
+
+var i=0;
+function mostrar(){
+  var c=CARDS[i];
+  document.getElementById('emoji').textContent=c.emoji;
+  document.getElementById('titulo').innerHTML=c.titulo;
+  document.getElementById('card').style.borderTopColor=c.cor;
+  var corpo=document.getElementById('corpo');
+  corpo.innerHTML='';
+  c.corpo.forEach(function(l){
+    var d=document.createElement('div'); d.className='linha'; d.innerHTML=l; corpo.appendChild(d);
+  });
+  if(c.conta){
+    var q=document.createElement('div'); q.className='conta'; q.innerHTML=c.conta; corpo.appendChild(q);
+  }
+  document.getElementById('passoTxt').textContent='Passo '+(i+1)+' de '+CARDS.length;
+  var p=''; for(var k=0;k<CARDS.length;k++){ p+= (k===i?'🟣':'⚪'); }
+  document.getElementById('pontos').textContent=p;
+  document.getElementById('btnVoltar').disabled=(i===0);
+  document.getElementById('btnProx').textContent = c.fim ? '🎯 Ir praticar' : 'Próximo ➜';
+  document.getElementById('btnOuvir').onclick=function(){ falar(c.audio); };
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function proximo(){
+  if(CARDS[i].fim){ window.location.href='praticar.html'; return; }
+  if(i<CARDS.length-1){ i++; mostrar(); }
+}
+function voltar(){ if(i>0){ i--; mostrar(); } }
+function falar(t){
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(t);
+    u.lang='pt-BR'; u.rate=0.9;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+mostrar();
+</script>
+</body>
+</html>

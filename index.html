@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemática 5º ano — Modo Leitura Fácil</title>
+<style>
+  :root{
+    --tinta:#22314f; --creme:#fdf6ea; --cartao:#ffffff; --roxo:#6c4bd1; --roxosuave:#efe9fb;
+    --verde:#1f9d63; --verdesuave:#e4f6ec; --amarelo:#f2b23a; --azul:#2f77c9; --azulsuave:#e7f0fb;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:Verdana, 'Segoe UI', Tahoma, sans-serif;
+    background:var(--creme); color:var(--tinta);
+    line-height:2; letter-spacing:.4px; word-spacing:1px;
+    padding:0 0 60px;
+  }
+  header{background:var(--roxo); color:#fff; padding:34px 20px; text-align:center;}
+  header h1{font-size:1.9em; line-height:1.5;}
+  header p{font-size:1.15em; margin-top:10px;}
+  .quadro{max-width:640px; margin:26px auto 0; padding:0 18px;}
+  .boasvindas{
+    background:var(--cartao); border:3px solid var(--roxosuave); border-radius:20px;
+    padding:26px 24px; text-align:left; font-size:1.3em;
+  }
+  .emojigrande{font-size:2.6em; text-align:center; display:block; margin-bottom:10px; line-height:1.3;}
+  .btnOuvir{
+    display:inline-flex; align-items:center; gap:10px; margin:18px 0 4px;
+    background:var(--amarelo); color:#4a3610; border:none; border-radius:40px;
+    padding:16px 26px; font-size:1.15em; font-weight:bold; cursor:pointer; font-family:inherit;
+  }
+  .btnOuvir:hover{background:#e39f24;}
+  h2.sec{max-width:640px; margin:34px auto 6px; padding:0 20px; font-size:1.4em;}
+  .cardLink{
+    display:block; max-width:640px; margin:16px auto; padding:24px 22px;
+    background:var(--cartao); border-radius:20px; text-decoration:none; color:var(--tinta);
+    border-left:12px solid var(--azul); box-shadow:0 4px 14px #0000001a;
+  }
+  .cardLink:hover{background:#fbfaff;}
+  .cardLink .n{
+    display:inline-block; background:var(--azul); color:#fff; border-radius:50%;
+    width:46px; height:46px; line-height:46px; text-align:center; font-size:1.3em; font-weight:bold; margin-bottom:8px;
+  }
+  .cardLink.aprender{border-left-color:var(--roxo);}
+  .cardLink.aprender .n{background:var(--roxo);}
+  .cardLink.praticar{border-left-color:var(--verde);}
+  .cardLink.praticar .n{background:var(--verde);}
+  .cardLink h3{font-size:1.35em; margin:6px 0;}
+  .cardLink p{font-size:1.15em;}
+  .seta{font-size:1.4em;}
+  footer{text-align:center; color:#8a8398; font-size:1em; margin-top:30px; padding:0 20px; line-height:1.8;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎲 Matemática do 5º ano</h1>
+  <p>Modo Leitura Fácil • um passo por vez</p>
+</header>
+
+<div class="quadro">
+  <div class="boasvindas">
+    <span class="emojigrande">🌟</span>
+    Oi! Que bom te ver aqui.
+    <br><br>
+    Vamos aprender juntos, com calma.
+    <br><br>
+    Uma ideia por vez.
+    <br>
+    Sem pressa. Você consegue. 💛
+    <br>
+    <button class="btnOuvir" onclick="falar('Oi! Que bom te ver aqui. Vamos aprender juntos, com calma. Uma ideia por vez. Sem pressa. Você consegue.')">🔊 Ouvir</button>
+  </div>
+</div>
+
+<h2 class="sec">👇 Escolha por onde começar</h2>
+
+<a class="cardLink aprender" href="aprender.html">
+  <span class="n">1</span>
+  <h3>📚 Aprender</h3>
+  <p>Ideias curtas, com desenhos e som. Toque em <b>Ouvir</b> quando quiser. <span class="seta">➜</span></p>
+</a>
+
+<a class="cardLink praticar" href="praticar.html">
+  <span class="n">2</span>
+  <h3>🎯 Praticar</h3>
+  <p>Perguntas fáceis, uma de cada vez. Cada acerto é uma vitória! <span class="seta">➜</span></p>
+</a>
+
+<footer>
+  Feito com carinho para estudar sem correria. 🍀<br>
+  Prova de segunda-feira, 13/07.
+</footer>
+
+<script>
+function falar(t){
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(t);
+    u.lang='pt-BR'; u.rate=0.9;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+</script>
+</body>
+</html>
